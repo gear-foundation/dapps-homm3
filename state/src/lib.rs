@@ -11,14 +11,10 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 pub mod metafns {
     pub type State = <ContractMetadata as Metadata>::State;
 
-    pub fn pingers(state: State) -> Vec<ActorId> {
-        state.into_iter().map(|(pinger, _)| pinger).collect()
-    }
-
-    pub fn ping_count(state: State, actor: ActorId) -> u128 {
+    pub fn saved_games(state: State) -> Vec<(ActorId, String)> {
         state
-            .into_iter()
-            .find_map(|(pinger, ping_count)| (pinger == actor).then_some(ping_count))
-            .unwrap_or_default()
+            .iter()
+            .map(|(actor_id, state)| (actor_id.clone(), state.tar.filename.clone()))
+            .collect()
     }
 }

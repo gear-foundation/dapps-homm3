@@ -19,6 +19,7 @@ gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "t
 app-state = { path = "state" }
 gtest = { git = "https://github.com/gear-tech/gear.git" }
 gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
+gcore = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
 tokio = "1"
 gclient = { git = "https://github.com/gear-tech/gear.git" }
 

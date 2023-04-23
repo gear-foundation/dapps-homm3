@@ -8,15 +8,19 @@ use gstd::{
     prelude::*,
     ActorId, MessageId,
 };
-use hashbrown::HashMap;
 
 #[cfg(feature = "binary-vendor")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-static mut STATE: Option<HashMap<ActorId, u128>> = None;
+#[derive(Debug, Default)]
+pub struct Contract {
+    saves: Vec<(ActorId, GameState)>,
+}
 
-fn state_mut() -> &'static mut HashMap<ActorId, u128> {
-    let state = unsafe { STATE.as_mut() };
+static mut CONTRACT: Option<Contract> = None;
+
+fn state_mut() -> &'static mut Contract {
+    let state = unsafe { CONTRACT.as_mut() };
 
     debug_assert!(state.is_some(), "state isn't initialized");
 
@@ -25,35 +29,43 @@ fn state_mut() -> &'static mut HashMap<ActorId, u128> {
 
 #[no_mangle]
 extern "C" fn init() {
-    unsafe { STATE = Some(HashMap::new()) }
+    unsafe { CONTRACT = Some(Default::default()) }
 }
 
-#[no_mangle]
-extern "C" fn handle() {
-    process_handle().expect("failed to load, decode, encode, or reply from `handle()`")
-}
+#[gstd::async_main]
+async fn main() {
+    let action: Action = msg::load().expect("Error at loading Homm3 Action");
+    let contract = state_mut();
 
-fn process_handle() -> Result<(), ContractError> {
-    let payload = msg::load()?;
+    gstd::debug!("Action = {:?}", action);
 
-    if let PingPong::Ping = payload {
-        let pingers = state_mut();
-
-        pingers
-            .entry(msg::source())
-            .and_modify(|ping_count| *ping_count = ping_count.saturating_add(1))
-            .or_insert(1);
-
-        reply(PingPong::Pong)?;
-    }
-
-    Ok(())
+    let event = match action {
+        Action::Save(state) => {
+            contract.saves.push((msg::source(), state));
+            Event::Saved
+        }
+        Action::Load { hash } => {
+            let state = match contract
+                .saves
+                .iter()
+                .find(|(_actor_id, state)| state.tar.hash.eq(&hash))
+            {
+                Some((_actor_id, state)) => Some(state),
+                None => None,
+            };
+            Event::Loaded(state.cloned())
+        }
+    };
+    gstd::debug!("Event = {:?}, encoded = {:?}", event, event.encode());
+    let _msg_id = reply(event).expect("Can't send reply");
 }
 
 #[no_mangle]
 extern "C" fn state() {
-    let state: <ContractMetadata as Metadata>::State =
-        state_mut().iter().map(|(k, v)| (*k, *v)).collect();
+    let state: <ContractMetadata as Metadata>::State = common_state()
+        .iter()
+        .map(|(k, v)| (*k, v.clone()))
+        .collect();
 
     reply(state).expect("failed to encode or reply from `state()`");
 }
@@ -67,4 +79,8 @@ extern "C" fn metahash() {
 
 fn reply(payload: impl Encode) -> GstdResult<MessageId> {
     msg::reply(payload, 0)
+}
+
+fn common_state() -> <ContractMetadata as Metadata>::State {
+    state_mut().saves.clone().into()
 }
