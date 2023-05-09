@@ -2,12 +2,7 @@
 
 use app_io::*;
 use gmeta::Metadata;
-use gstd::{
-    errors::{ContractError, Result as GstdResult},
-    msg,
-    prelude::*,
-    ActorId, MessageId,
-};
+use gstd::{errors::Result as GstdResult, msg, prelude::*, ActorId, MessageId};
 
 #[cfg(feature = "binary-vendor")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
@@ -45,14 +40,11 @@ async fn main() {
             Event::Saved
         }
         Action::Load { hash } => {
-            let state = match contract
+            let state = contract
                 .saves
                 .iter()
                 .find(|(_actor_id, state)| state.tar.hash.eq(&hash))
-            {
-                Some((_actor_id, state)) => Some(state),
-                None => None,
-            };
+                .map(|(_actor_id, state)| state);
             Event::Loaded(state.cloned())
         }
     };
@@ -82,5 +74,5 @@ fn reply(payload: impl Encode) -> GstdResult<MessageId> {
 }
 
 fn common_state() -> <ContractMetadata as Metadata>::State {
-    state_mut().saves.clone().into()
+    state_mut().saves.clone()
 }

@@ -14,7 +14,7 @@ pub mod metafns {
     pub fn saved_games(state: State) -> Vec<(ActorId, String)> {
         state
             .iter()
-            .map(|(actor_id, state)| (actor_id.clone(), state.tar.filename.clone()))
+            .map(|(actor_id, state)| (*actor_id, state.tar.filename.clone()))
             .collect()
     }
 }

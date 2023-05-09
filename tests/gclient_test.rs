@@ -1,9 +1,7 @@
-use app::WASM_BINARY_OPT;
 use app_io::*;
-use app_state::{WASM_BINARY, WASM_EXPORTS};
-use gclient::{EventProcessor, EventListener, GearApi, Result};
-use gstd::{prelude::*, ActorId};
-
+use gclient::{EventProcessor, GearApi, Result};
+use gstd::prelude::*;
+use homm3::WASM_BINARY_OPT;
 
 const ALICE: [u8; 32] = [
     212, 53, 147, 199, 21, 253, 211, 28, 97, 20, 26, 189, 4, 169, 159, 214, 130, 44, 133, 88, 133,
@@ -20,7 +18,6 @@ async fn gclient_test() -> Result<()> {
         .calculate_upload_gas(None, WASM_BINARY_OPT.into(), vec![], 0, true)
         .await?
         .min_limit;
-    
 
     let (mut message_id, program_id, _) = client
         .upload_program_bytes(
@@ -35,9 +32,14 @@ async fn gclient_test() -> Result<()> {
     assert!(listener.message_processed(message_id).await?.succeed());
 
     let demo_state = GameState {
-        name: "autosave1".to_string(),
-        data: vec![6, 6, 6, 6, 6, 6, 6, 6, 6],
+        saver_id: ALICE.into(),
+        tar: ArchiveDescription {
+            filename: "filename".to_string(),
+            hash: "hash".to_string(),
+            name: "name".to_string(),
+        },
     };
+
     let save_action = Action::Save(demo_state);
 
     gas_limit = client
@@ -61,32 +63,6 @@ async fn gclient_test() -> Result<()> {
         Event::Saved.encode()
     );
     assert_eq!(Event::Saved, decoded_reply);
-
-    // let state_binary = WASM_BINARY.to_vec();
-
-    // assert_eq!(
-    //     client
-    //         .read_state_using_wasm::<_, u128>(
-    //             program_id,
-    //             WASM_EXPORTS[2],
-    //             state_binary.clone(),
-    //             Some(ActorId::from(ALICE))
-    //         )
-    //         .await?,
-    //     1
-    // );
-
-    // assert_eq!(
-    //     client
-    //         .read_state_using_wasm::<(), Vec<ActorId>>(
-    //             program_id,
-    //             WASM_EXPORTS[1],
-    //             state_binary,
-    //             None
-    //         )
-    //         .await?,
-    //     vec![ALICE.into()]
-    // );
 
     Ok(())
 }
