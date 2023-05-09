@@ -1,5 +1,5 @@
 [package]
-name = "app"
+name = "homm3"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
@@ -7,19 +7,19 @@ authors = ["Gear Technologies"]
 
 [dependencies]
 app-io = { path = "io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gstd = { git = "https://github.com/gear-tech/gear.git", features = ["debug"], rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+gmeta = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
 hashbrown = "0.13"
 
 [build-dependencies]
 app-io = { path = "io" }
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
 
 [dev-dependencies]
 app-state = { path = "state" }
-gtest = { git = "https://github.com/gear-tech/gear.git" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
-gcore = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
+gtest = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+gstd = { git = "https://github.com/gear-tech/gear.git", features = ["debug"], rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68" }
+gcore = { git = "https://github.com/gear-tech/gear.git", rev = "5c685d0f15c412ab6ee019ceaf7ce084426dfb68", features = ["debug"] }
 tokio = "1"
 gclient = { git = "https://github.com/gear-tech/gear.git" }
 
