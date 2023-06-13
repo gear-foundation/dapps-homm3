@@ -1,8 +1,7 @@
-use app_io::*;
-use app_state::{WASM_BINARY, WASM_EXPORTS};
-use gmeta::{Encode, Metadata};
-use gstd::{errors::ContractError, ActorId};
-use gtest::{Log, Program, System};
+use gmeta::Encode;
+use gtest::{Program, System};
+use homm3_io::*;
+// use homm3_state::{WASM_BINARY, WASM_EXPORTS};
 
 #[test]
 fn test() {
@@ -15,11 +14,14 @@ fn test() {
 
     assert!(!result.main_failed());
 
-    let name = "WWW";
+    let name = "Q4fdsW";
 
     let demo_state = GameState {
-        name: name.to_string(),
-        data: vec![6, 6, 6, 6, 6, 6, 6, 6, 6],
+        saver_id: 4.into(),
+        archive: ArchiveDescription {
+            filename: "save1".to_string(),
+            hash: name.to_string(),
+        },
     };
     let save_action = Action::Save(demo_state.clone());
 

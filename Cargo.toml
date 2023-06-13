@@ -1,38 +1,53 @@
 [package]
-name = "app"
-version = "0.1.0"
+name = "homm3"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[workspace.package]
+version = "0.1.1"
+authors = ["Gear Technologies"]
 edition = "2021"
 license = "MIT"
-authors = ["Gear Technologies"]
 
 [dependencies]
-app-io = { path = "io" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
-gmeta = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
-hashbrown = "0.13"
-
-[build-dependencies]
-app-io = { path = "io" }
-gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", branch = "testnet" }
+gstd = { workspace = true, features = ["debug"] }
+primitive-types.workspace = true
+homm3-io.workspace = true
+hashbrown.workspace = true
+gmeta.workspace = true
 
 [dev-dependencies]
-app-state = { path = "state" }
-gtest = { git = "https://github.com/gear-tech/gear.git" }
-gstd = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
-gcore = { git = "https://github.com/gear-tech/gear.git", branch = "testnet", features = ["debug"] }
+gtest.workspace = true
+gclient.workspace = true
+tokio.workspace = true
+homm3-state.workspace = true
+
+[build-dependencies]
+gear-wasm-builder.workspace = true
+homm3-io.workspace = true
+
+gmeta.workspace = true
+
+[workspace.dependencies]
+gstd = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
+primitive-types = { version = "0.12", default-features = false }
+parity-scale-codec = { version = "3", default-features = false }
+scale-info = { version = "2", default-features = false }
+homm3-io = { path = "io" }
+homm3-state = { path = "state" }
+sp-core-hashing = { version = "8.0.0", default-features = false }
+gmeta = { git = "https://github.com/gear-tech/gear", rev = "78dfa07" }
+gtest = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
+gclient = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
 tokio = "1"
-gclient = { git = "https://github.com/gear-tech/gear.git" }
+hashbrown = "0.13"
+gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
 
-[features]
-# Used for inserting constants with WASM binaries (NOT paths) of the contract in
-# the root crate. Usually these constants used in gclient tests instead of
-# strings with paths to the binaries in the "target" directory. If you don't
-# like this approach or don't use gclient tests, you can freely remove this
-# feature from here and from the rest of the code.
-binary-vendor = []
-default = ["binary-vendor"]
-
-# It's necessary to include all metawasm crates in the workspace section,
-# otherwise they'll be ignored by Cargo and won't be built.
 [workspace]
 members = ["state"]
+
+[features]
+binary-vendor = []
+

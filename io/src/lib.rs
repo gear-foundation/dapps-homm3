@@ -5,14 +5,13 @@ use gstd::{prelude::*, ActorId};
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub struct ArchiveDescription {
     pub filename: String,
-    pub name: String,
     pub hash: String,
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub struct GameState {
     pub saver_id: ActorId,
-    pub tar: ArchiveDescription,
+    pub archive: ArchiveDescription,
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
@@ -35,5 +34,5 @@ impl Metadata for ContractMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = Vec<(ActorId, GameState)>;
+    type State = Vec<GameState>;
 }

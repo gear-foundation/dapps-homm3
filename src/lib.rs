@@ -1,20 +1,15 @@
 #![no_std]
 
-use app_io::*;
 use gmeta::Metadata;
-use gstd::{
-    errors::{ContractError, Result as GstdResult},
-    msg,
-    prelude::*,
-    ActorId, MessageId,
-};
+use gstd::{errors::Result as GstdResult, msg, prelude::*, MessageId};
+use homm3_io::*;
 
 #[cfg(feature = "binary-vendor")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 #[derive(Debug, Default)]
 pub struct Contract {
-    saves: Vec<(ActorId, GameState)>,
+    saves: Vec<GameState>,
 }
 
 static mut CONTRACT: Option<Contract> = None;
@@ -41,18 +36,15 @@ async fn main() {
 
     let event = match action {
         Action::Save(state) => {
-            contract.saves.push((msg::source(), state));
+            contract.saves.push(state);
             Event::Saved
         }
         Action::Load { hash } => {
-            let state = match contract
+            let state = contract
                 .saves
                 .iter()
-                .find(|(_actor_id, state)| state.tar.hash.eq(&hash))
-            {
-                Some((_actor_id, state)) => Some(state),
-                None => None,
-            };
+                .find(|state| state.archive.hash.eq(&hash));
+
             Event::Loaded(state.cloned())
         }
     };
@@ -62,10 +54,7 @@ async fn main() {
 
 #[no_mangle]
 extern "C" fn state() {
-    let state: <ContractMetadata as Metadata>::State = common_state()
-        .iter()
-        .map(|(k, v)| (*k, v.clone()))
-        .collect();
+    let state: <ContractMetadata as Metadata>::State = common_state();
 
     reply(state).expect("failed to encode or reply from `state()`");
 }
@@ -82,5 +71,5 @@ fn reply(payload: impl Encode) -> GstdResult<MessageId> {
 }
 
 fn common_state() -> <ContractMetadata as Metadata>::State {
-    state_mut().saves.clone().into()
+    state_mut().saves.clone()
 }
