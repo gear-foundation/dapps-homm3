@@ -2,14 +2,11 @@
 
 use gmeta::Metadata;
 use gstd::{errors::Result as GstdResult, msg, prelude::*, MessageId};
-use homm3_io::*;
-
-#[cfg(feature = "binary-vendor")]
-include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
+use homm3_archive_io::*;
 
 #[derive(Debug, Default)]
 pub struct Contract {
-    saves: Vec<GameState>,
+    saves: Vec<GameArchive>,
 }
 
 static mut CONTRACT: Option<Contract> = None;
@@ -35,9 +32,9 @@ async fn main() {
     gstd::debug!("Action = {:?}", action);
 
     let event = match action {
-        Action::Save(state) => {
+        Action::SaveArchive(state) => {
             contract.saves.push(state);
-            Event::Saved
+            Event::SavedArchive
         }
         Action::Load { hash } => {
             let state = contract

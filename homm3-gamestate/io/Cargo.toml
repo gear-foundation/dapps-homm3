@@ -1,5 +1,5 @@
 [package]
-name = "homm3-io"
+name = "homm3-gamestate-io"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

@@ -1725,7 +1725,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "homm3"
+name = "homm3-archive"
 version = "0.1.1"
 dependencies = [
  "gclient",
@@ -1734,14 +1734,14 @@ dependencies = [
  "gstd",
  "gtest",
  "hashbrown 0.13.2",
- "homm3-io",
- "homm3-state",
+ "homm3-archive-io",
+ "homm3-archive-state",
  "primitive-types",
  "tokio",
 ]
 
 [[package]]
-name = "homm3-io"
+name = "homm3-archive-io"
 version = "0.1.1"
 dependencies = [
  "gmeta",
@@ -1751,13 +1751,49 @@ dependencies = [
 ]
 
 [[package]]
-name = "homm3-state"
+name = "homm3-archive-state"
 version = "0.1.1"
 dependencies = [
  "gear-wasm-builder",
  "gmeta",
  "gstd",
- "homm3-io",
+ "homm3-archive-io",
+]
+
+[[package]]
+name = "homm3-gamestate"
+version = "0.1.1"
+dependencies = [
+ "gclient",
+ "gear-wasm-builder",
+ "gmeta",
+ "gstd",
+ "gtest",
+ "hashbrown 0.13.2",
+ "homm3-gamestate-io",
+ "homm3-gamestate-state",
+ "primitive-types",
+ "tokio",
+]
+
+[[package]]
+name = "homm3-gamestate-io"
+version = "0.1.1"
+dependencies = [
+ "gmeta",
+ "gstd",
+ "parity-scale-codec",
+ "scale-info",
+]
+
+[[package]]
+name = "homm3-gamestate-state"
+version = "0.1.1"
+dependencies = [
+ "gear-wasm-builder",
+ "gmeta",
+ "gstd",
+ "homm3-gamestate-io",
 ]
 
 [[package]]

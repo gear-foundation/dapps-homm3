@@ -9,21 +9,21 @@ pub struct ArchiveDescription {
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
-pub struct GameState {
+pub struct GameArchive {
     pub saver_id: ActorId,
     pub archive: ArchiveDescription,
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub enum Action {
-    Save(GameState),
+    SaveArchive(GameArchive),
     Load { hash: String },
 }
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub enum Event {
-    Loaded(Option<GameState>),
-    Saved,
+    Loaded(Option<GameArchive>),
+    SavedArchive,
 }
 
 pub struct ContractMetadata;
@@ -34,5 +34,5 @@ impl Metadata for ContractMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = Vec<GameState>;
+    type State = Vec<GameArchive>;
 }

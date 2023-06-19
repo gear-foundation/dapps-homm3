@@ -1,9 +1,8 @@
-[package]
-name = "homm3"
-version.workspace = true
-edition.workspace = true
-license.workspace = true
-authors.workspace = true
+[workspace]
+members = [
+    "homm3-archive",
+    "homm3-gamestate"
+]
 
 [workspace.package]
 version = "0.1.1"
@@ -11,32 +10,15 @@ authors = ["Gear Technologies"]
 edition = "2021"
 license = "MIT"
 
-[dependencies]
-gstd = { workspace = true, features = ["debug"] }
-primitive-types.workspace = true
-homm3-io.workspace = true
-hashbrown.workspace = true
-gmeta.workspace = true
-
-[dev-dependencies]
-gtest.workspace = true
-gclient.workspace = true
-tokio.workspace = true
-homm3-state.workspace = true
-
-[build-dependencies]
-gear-wasm-builder.workspace = true
-homm3-io.workspace = true
-
-gmeta.workspace = true
-
 [workspace.dependencies]
 gstd = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
 primitive-types = { version = "0.12", default-features = false }
 parity-scale-codec = { version = "3", default-features = false }
 scale-info = { version = "2", default-features = false }
-homm3-io = { path = "io" }
-homm3-state = { path = "state" }
+homm3-archive-io = { path = "homm3-archive/io" }
+homm3-archive-state = { path = "homm3-archive/state" }
+homm3-gamestate-io = { path = "homm3-gamestate/io" }
+homm3-gamestate-state = { path = "homm3-gamestate/state" }
 sp-core-hashing = { version = "8.0.0", default-features = false }
 gmeta = { git = "https://github.com/gear-tech/gear", rev = "78dfa07" }
 gtest = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
@@ -44,10 +26,4 @@ gclient = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
 tokio = "1"
 hashbrown = "0.13"
 gear-wasm-builder = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }
-
-[workspace]
-members = ["state"]
-
-[features]
-binary-vendor = []
 
