@@ -1,10 +1,11 @@
 #![no_std]
 
 use gmeta::{InOut, Metadata};
-use gstd::prelude::*;
+use gstd::{prelude::*, ActorId};
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug, Default)]
 pub struct GameState {
+    pub saver_id: ActorId,
     pub day: u32,
     pub current_player: String,
     pub player_states: Vec<PlayerState>,
@@ -13,6 +14,7 @@ pub struct GameState {
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug)]
 pub enum Action {
     SaveGameState {
+        saver_id: ActorId,
         day: u32,
         current_player: String,
         player_states: Vec<PlayerState>,
@@ -32,7 +34,7 @@ impl Metadata for ContractMetadata {
     type Others = ();
     type Reply = ();
     type Signal = ();
-    type State = GameState;
+    type State = Vec<GameState>;
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]
@@ -88,8 +90,7 @@ pub enum FortLevel {
     None = 0_u8,
     Fort = 1_u8,
     Citadel = 2_u8,
-    Castle = 3_u8
-    ,
+    Castle = 3_u8,
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]
@@ -123,7 +124,7 @@ pub struct Hero {
     pub sex: u8,
     pub experience_points: i64,
     pub secondary_skills: Vec<SecondarySkillInfo>,
-    pub stacks: [Option<Stack>; 7]
+    pub stacks: [Option<Stack>; 7],
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]

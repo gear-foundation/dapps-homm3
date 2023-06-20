@@ -6,7 +6,7 @@ use homm3_gamestate_io::*;
 
 #[derive(Debug, Default)]
 pub struct Contract {
-    state: GameState,
+    states: Vec<GameState>,
 }
 
 static mut CONTRACT: Option<Contract> = None;
@@ -33,15 +33,17 @@ async fn main() {
 
     match action {
         Action::SaveGameState {
+            saver_id,
             day,
             current_player,
             player_states,
         } => {
-            contract.state = GameState {
+            contract.states.push(GameState {
+                saver_id,
                 day,
                 current_player,
                 player_states,
-            }
+            });
         }
     };
 }
@@ -65,5 +67,5 @@ fn reply(payload: impl Encode) -> GstdResult<MessageId> {
 }
 
 fn common_state() -> <ContractMetadata as Metadata>::State {
-    state_mut().state.clone()
+    state_mut().states.clone()
 }
