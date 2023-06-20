@@ -108,6 +108,13 @@ pub struct SecondarySkillInfo {
     pub value: u8,
 }
 
+#[derive(Debug, Default, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]
+pub struct Stack {
+    pub name: String,
+    pub level: i32,
+    pub count: u32,
+}
+
 #[derive(Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]
 pub struct Hero {
     pub name: String,
@@ -116,6 +123,7 @@ pub struct Hero {
     pub sex: u8,
     pub experience_points: i64,
     pub secondary_skills: Vec<SecondarySkillInfo>,
+    pub stacks: [Option<Stack>; 7]
 }
 
 #[derive(Debug, Clone, Hash, PartialEq, PartialOrd, Eq, Ord, Encode, Decode, TypeInfo)]
