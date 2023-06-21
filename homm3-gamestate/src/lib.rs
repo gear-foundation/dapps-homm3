@@ -1,6 +1,5 @@
 #![no_std]
 
-use gmeta::Metadata;
 use gstd::{errors::Result as GstdResult, msg, prelude::*, MessageId};
 use homm3_gamestate_io::*;
 
@@ -50,8 +49,7 @@ async fn main() {
 
 #[no_mangle]
 extern "C" fn state() {
-    let state: <ContractMetadata as Metadata>::State = common_state();
-
+    let state = &state_mut().states;
     reply(state).expect("failed to encode or reply from `state()`");
 }
 
@@ -66,6 +64,3 @@ fn reply(payload: impl Encode) -> GstdResult<MessageId> {
     msg::reply(payload, 0)
 }
 
-fn common_state() -> <ContractMetadata as Metadata>::State {
-    state_mut().states.clone()
-}
