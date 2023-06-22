@@ -1,7 +1,8 @@
 [workspace]
 members = [
     "homm3-archive",
-    "homm3-gamestate"
+    "homm3-gamestate",
+    "homm3-battle",
 ]
 
 [workspace.package]
@@ -19,6 +20,8 @@ homm3-archive-io = { path = "homm3-archive/io" }
 homm3-archive-state = { path = "homm3-archive/state" }
 homm3-gamestate-io = { path = "homm3-gamestate/io" }
 homm3-gamestate-state = { path = "homm3-gamestate/state" }
+homm3-battle-io = { path = "homm3-battle/io" }
+homm3-battle-state = { path = "homm3-battle/state" }
 sp-core-hashing = { version = "8.0.0", default-features = false }
 gmeta = { git = "https://github.com/gear-tech/gear", rev = "78dfa07" }
 gtest = { git = "https://github.com/gear-tech/gear.git", rev = "78dfa07" }

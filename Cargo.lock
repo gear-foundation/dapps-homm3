@@ -1761,6 +1761,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "homm3-battle"
+version = "0.1.1"
+dependencies = [
+ "gclient",
+ "gear-wasm-builder",
+ "gmeta",
+ "gstd",
+ "gtest",
+ "hashbrown 0.13.2",
+ "homm3-battle-io",
+ "homm3-battle-state",
+ "primitive-types",
+ "tokio",
+]
+
+[[package]]
+name = "homm3-battle-io"
+version = "0.1.1"
+dependencies = [
+ "gmeta",
+ "gstd",
+ "parity-scale-codec",
+ "scale-info",
+]
+
+[[package]]
+name = "homm3-battle-state"
+version = "0.1.1"
+dependencies = [
+ "gear-wasm-builder",
+ "gmeta",
+ "gstd",
+ "homm3-battle-io",
+]
+
+[[package]]
 name = "homm3-gamestate"
 version = "0.1.1"
 dependencies = [
