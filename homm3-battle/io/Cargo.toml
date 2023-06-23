@@ -10,3 +10,4 @@ gmeta.workspace = true
 gstd.workspace = true
 scale-info.workspace = true
 parity-scale-codec.workspace = true
+homm3-gamestate-io.workspace = true

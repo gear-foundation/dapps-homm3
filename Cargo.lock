@@ -1782,6 +1782,7 @@ version = "0.1.1"
 dependencies = [
  "gmeta",
  "gstd",
+ "homm3-gamestate-io",
  "parity-scale-codec",
  "scale-info",
 ]
