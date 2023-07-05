@@ -53,13 +53,6 @@ extern "C" fn state() {
     reply(state).expect("failed to encode or reply from `state()`");
 }
 
-#[no_mangle]
-extern "C" fn metahash() {
-    let metahash: [u8; 32] = include!("../.metahash");
-
-    reply(metahash).expect("failed to encode or reply from `metahash()`");
-}
-
 fn reply(payload: impl Encode) -> GstdResult<MessageId> {
     msg::reply(payload, 0)
 }
