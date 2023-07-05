@@ -56,4 +56,3 @@ extern "C" fn state() {
 fn reply(payload: impl Encode) -> GstdResult<MessageId> {
     msg::reply(payload, 0)
 }
-

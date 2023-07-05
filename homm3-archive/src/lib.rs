@@ -55,7 +55,6 @@ extern "C" fn state() {
     reply(state).expect("failed to encode or reply from `state()`");
 }
 
-
 fn reply(payload: impl Encode) -> GstdResult<MessageId> {
     msg::reply(payload, 0)
 }

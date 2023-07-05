@@ -2,7 +2,7 @@
 
 use gmeta::{InOut, Metadata};
 use gstd::prelude::*;
-use homm3_gamestate_io::{Stack, Hero};
+use homm3_gamestate_io::{Hero, Stack};
 
 #[derive(Encode, Decode, TypeInfo, Hash, PartialEq, PartialOrd, Eq, Ord, Clone, Debug, Default)]
 pub struct BattleStatistics {
